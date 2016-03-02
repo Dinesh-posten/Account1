@@ -1,0 +1,97 @@
+<apex:page standardController="Movie_Library__c" extensions="movieLibraryController" sidebar="false" showHeader="false" docType="HTML-5.0">
+
+<script>
+
+    document.getElementById('change').onclick = changeColor;   
+
+    function changeColor() {
+        document.body.style.color = "purple";
+        return false;
+    }   
+
+</script>
+ <apex:form >
+
+    <apex:repeat value="{!n}" var="d">
+    
+       <apex:outputText value="{!d}">  </apex:outputText> <br/ >
+    </apex:repeat>  
+<!-- <apex:outputPanel >
+    <apex:outputText value="{!n}"></apex:outputText>
+</apex:outputPanel>   --> 
+
+
+<apex:outputPanel id="error" >
+     <apex:pageMessages ></apex:pageMessages>
+     </apex:outputPanel>
+
+
+<apex:pageblock >
+<apex:pageblockSection >
+ <!--   <apex:inputField value="{!Movie_Library__c.Genere__c}" /> 
+     <apex:inputField value="{!Movie_Library__c.Language__c}"/>  -->
+                              
+                   <apex:selectList value="{!genere}" size="1"  >
+                   Genere:&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  <apex:selectOptions value="{!genereOptions}" id="a"/>  
+                </apex:selectList>
+                <apex:selectList value="{!language}" size="1">
+                    Language:&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  <apex:selectOptions value="{!languageoptions}" id="b"/>
+                </apex:selectList>  
+                     
+        </apex:pageBlockSection>   
+</apex:pageblock>
+
+
+<apex:commandButton value="SEARCH" action="{!search}" id="change" rerender="out,out3,out4,out5,error" status="status1"/>
+<apex:outputPanel id="out5" > 
+                  <p>You have selected: 
+                 <apex:outputText value="{!genere} and " /> <apex:outputText value="{!language}"/></p>
+              </apex:outputPanel> 
+
+<apex:outputPanel id="out3">
+          <apex:actionstatus id="status1" startText="Searching.." > 
+             <apex:facet name="stop"> 
+               <apex:outputPanel id="out4" > 
+                     <apex:pageBlock id="out">
+
+                    <apex:pageBlocktable value="{!mList}" var="m1">
+
+                <apex:column headervalue="Movie Name">
+                <apex:outputLink value="https://ap2.salesforce.com/{!m1.id}"> {!m1.Movie__c} </apex:outputLink> 
+                </apex:column>
+                <apex:column value="{!m1.Description__c}"/> 
+                <apex:column value="{!m1.Number_of_copies__c}"/>
+
+            </apex:pageBlocktable> 
+    </apex:pageBlock>
+                 <apex:outputText /> 
+              </apex:outputPanel> 
+            </apex:facet> 
+          </apex:actionstatus> 
+     </apex:outputPanel> 
+
+
+
+
+
+
+<div class="topcorner">
+
+ <apex:commandButton value="Like" id="but" action="{!likeButton}" rendered="true" title="Like" rerender="out1,out2" status="status" onclick="changeColor();"/> </div><br/ >
+<apex:outputPanel id="out1">
+          <apex:actionstatus id="status" startText="Thank you.." > 
+             <apex:facet name="stop">
+               <apex:outputPanel id="out2" > 
+                  <apex:repeat value="{!Summaries}" var="summary" rendered="true">
+          <font color="green">  Total Likes: {!summary.Quantity}  </font> <br/>
+                </apex:repeat>
+                 <apex:outputText /> 
+              </apex:outputPanel> 
+            </apex:facet> 
+          </apex:actionstatus> 
+     </apex:outputPanel> 
+
+
+</apex:form> 
+</apex:page>
+                         
